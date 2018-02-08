@@ -28,4 +28,14 @@ public class NettyContainer {
     WebApplication getApplication() {
         return application;
     }
+
+    public static NettyContainer getHolderContainer(){
+        return NettyContainerHolder.container;
+    }
+    public static void setHolderContainer(NettyContainer container){
+        NettyContainerHolder.container = container;
+    }
+    static class NettyContainerHolder {
+        private static NettyContainer container = null;
+    }
 }

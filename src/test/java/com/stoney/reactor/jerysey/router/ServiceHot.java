@@ -1,5 +1,7 @@
 package com.stoney.reactor.jerysey.router;
 
+import reactor.core.publisher.Flux;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -29,4 +31,16 @@ public class ServiceHot {
         System.out.println("body = " + body);
         return new UserTest("keke", 200, "li");
     }
+
+
+    @GET
+    @Path("/sex")
+    @Produces("text/plain")
+    public String getSex(@QueryParam("name") String name){
+        System.out.println();
+        return "male>" + name;
+    }
+
+
+
 }

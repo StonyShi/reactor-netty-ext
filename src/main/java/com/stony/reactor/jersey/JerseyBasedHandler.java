@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.ipc.netty.http.server.HttpServerRequest;
 import reactor.ipc.netty.http.server.HttpServerResponse;
+import reactor.ipc.netty.http.server.HttpServerRoutes;
+import reactor.ipc.netty.http.server.SimpleHttpServerRoutes;
 
 import javax.annotation.PreDestroy;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 /**
  * <p>reactor-netty-ext
@@ -52,6 +55,7 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
     public JerseyBasedHandler(ClassPathResourceConfig config) {
         resourceConfig = config;
         NettyContainer container = ContainerFactory.createContainer(NettyContainer.class, resourceConfig);
+        NettyContainer.setHolderContainer(container);
         application = container.getApplication();
         nettyToJerseyBridge = container.getNettyToJerseyBridge();
         logger.info("Started Jersey based request router.");
@@ -60,6 +64,8 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
     @Override
     public Publisher<Void> apply(HttpServerRequest request, HttpServerResponse response) {
 
+        HttpServerRoutes routes = HttpServerRoutes.newRoutes();
+
          /*
          * Creating the Container request eagerly, subscribes to the request content eagerly. Failure to do so, will
           * result in expiring/loss of content.
@@ -67,7 +73,7 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
 
         //we have to close input stream, to emulate normal lifecycle
 
-        final InputStream requestData = new HttpContentInputStream(response.alloc(), request.receive().aggregate().asByteArray());
+        final InputStream requestData = new HttpContentInputStream(response.alloc(), request.receive());
 
         final ContainerRequest containerRequest = nettyToJerseyBridge.bridgeRequest(request, requestData);
         final ContainerResponseWriter containerResponse = nettyToJerseyBridge.bridgeResponse(response);
@@ -113,9 +119,15 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
         String classPath = "com.jersey";
         List<Class<?>> providerClass = Lists.newArrayList(MessageBodyReader.class, MessageBodyWriter.class);
         Set<Class<?>> providers = new HashSet<>(16);
+        Consumer<HttpServerRoutes> routesBuilder;
 
         public Builder withClassPath(String classPath) {
             this.classPath = classPath;
+            return this;
+        }
+
+        public Builder addRouter(Consumer<HttpServerRoutes> routesBuilder) {
+            this.routesBuilder = routesBuilder;
             return this;
         }
 
@@ -138,10 +150,15 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
             return false;
         }
 
-        public JerseyBasedHandler build() {
+        public BiFunction<HttpServerRequest, HttpServerResponse, Publisher<Void>> build() {
             ClassPathResourceConfig config = new ClassPathResourceConfig(this.classPath);
             if (!providers.isEmpty()) {
                 config.addValueProviderClass(providers);
+            }
+            if (this.routesBuilder != null) {
+                HttpServerRoutes routes = SimpleHttpServerRoutes.newRoutes(new JerseyBasedHandler(config));
+                routesBuilder.accept(routes);
+                return routes;
             }
             return new JerseyBasedHandler(config);
         }

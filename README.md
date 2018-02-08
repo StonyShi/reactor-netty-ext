@@ -1,11 +1,17 @@
 ### reactor-netty-ext
-#### 支持jersey
+#### 支持jersey 的
+###  增加对原有路由全桥接，支持静态文件访问
 ```
- HttpServer.create(8080)
-                .startAndAwait(JerseyBasedHandler.builder()
-                        .withClassPath("com.stoney.reactor.jerysey.router")
-                        .addValueProvider(JacksonProvider.class)
-                        .build());
+ final Path resource = Paths.get(NettyServerTest.class.getResource("/public").toURI());
+         HttpServer.create(8080)
+                 .startAndAwait(JerseyBasedHandler.builder()
+                         .withClassPath("com.stoney.reactor.jerysey.router")
+                         .addValueProvider(JacksonProvider.class)
+                         .addRouter(routes -> {
+                             routes.get("/get", (req, resp) -> resp.sendString(Mono.just("asdfasdf")))
+                             .directory("/static", resource);
+                         }).build()
+                 );
 
 @Path("/hot")
 public class ServiceHot {
@@ -18,6 +24,7 @@ public class ServiceHot {
         return new UserTest("keke", 200, "li");
     }
 }
+
 
 
 curl -X POST \

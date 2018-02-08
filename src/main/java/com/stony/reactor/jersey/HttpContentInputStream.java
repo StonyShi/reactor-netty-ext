@@ -33,46 +33,6 @@ public class HttpContentInputStream extends InputStream {
     private final Condition contentAvailabilityMonitor = lock.newCondition();
     private final ByteBuf contentBuffer;
 
-    public HttpContentInputStream(final ByteBufAllocator allocator, final Mono<byte[]> content) {
-        contentBuffer = allocator.buffer();
-        content.subscribe(bytes -> {
-                    lock.lock();
-                    try {
-                        if (bytes.length > 0) {
-                            contentBuffer.writeBytes(bytes);
-                        }
-
-                        contentAvailabilityMonitor.signalAll();
-                    } catch (Exception e) {
-                        logger.error("Error on server", e);
-                    } finally {
-                        lock.unlock();
-                    }
-                },
-                throwable -> {
-                    lock.lock();
-                    try {
-                        completedWithError = throwable;
-                        isCompleted = true;
-
-                        logger.error("Flux Observer, got error: " + throwable.getMessage());
-                        contentAvailabilityMonitor.signalAll();
-                    } finally {
-                        lock.unlock();
-                    }
-                },
-                () -> {
-                    lock.lock();
-                    try {
-                        isCompleted = true;
-
-                        logger.debug("Processing complete");
-                        contentAvailabilityMonitor.signalAll();
-                    } finally {
-                        lock.unlock();
-                    }
-                });
-    }
     public HttpContentInputStream(final ByteBufAllocator allocator, final Flux<ByteBuf> content) {
         contentBuffer = allocator.buffer();
         content.subscribe(byteBuf -> {
