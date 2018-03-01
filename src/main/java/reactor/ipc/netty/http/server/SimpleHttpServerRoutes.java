@@ -90,7 +90,7 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
 
         MimeType type = MimeTypeUtil.getInstance().getMimeTypeByUri(request.uri());
         if(type != null) {
-            Path p = staticDirectory.resolve(type.getFileName());
+            Path p = staticDirectory.resolve(type.getFilePath());
             if (Files.isReadable(p)) {
                 return response.sendFile(p);
             }

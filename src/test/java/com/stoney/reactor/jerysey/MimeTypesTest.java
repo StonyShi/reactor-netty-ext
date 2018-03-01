@@ -68,19 +68,34 @@ public class MimeTypesTest {
         Map<String, MimeType> suffixMap = types.stream().collect(Collectors.toMap(MimeType::getSuffix, mimeType -> mimeType));
 
         System.out.println("map = \n" + suffixMap.keySet());
-        String url = "http://java.sun.com/test.css?a=1&b=2";
+        String url = "http://java.sun.com/test/test.css?a=1&b=2";
         URI uri = URI.create(url);
         System.out.println(uri.getPath());
         System.out.println(uri.getHost());
         System.out.println(uri.getQuery());
 
         System.out.println(">> " + uri.getPath().substring(uri.getPath().lastIndexOf("/")+1));
-
+        System.out.println("---file----");
         System.out.println(MimeTypeUtil.getFileName(uri.getPath()));
+        System.out.println(MimeTypeUtil.getFilePath(uri.getPath()));
+        System.out.println("file sufffix");
         System.out.println(MimeTypeUtil.getFileSuffix(MimeTypeUtil.getFileName(uri.getPath())));
         System.out.println(MimeTypeUtil.getInstance().getMimeTypeByPath(uri.getPath()));
 
         System.out.println(path.getParent().resolve("mime.types").toAbsolutePath());
+
+        System.out.println("---------");
+        String prefix = "/test.html/";
+        if (prefix.charAt(0) == '/') {
+            prefix = prefix.substring(1);
+        }
+        System.out.println(prefix);
+
+
+        if (prefix.charAt(prefix.length()-1) == '/') {
+            prefix = prefix.substring(0,prefix.length()-1);
+        }
+        System.out.println(prefix);
     }
 
 

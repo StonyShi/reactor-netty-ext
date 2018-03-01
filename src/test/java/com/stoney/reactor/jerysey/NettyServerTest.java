@@ -3,16 +3,12 @@ package com.stoney.reactor.jerysey;
 import com.stony.reactor.jersey.JacksonProvider;
 import com.stony.reactor.jersey.JerseyBasedHandler;
 import org.junit.Test;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.ipc.netty.http.server.HttpServer;
-import reactor.ipc.netty.http.server.HttpServerRoutes;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.function.Consumer;
 
 /**
  * <p>reactor-netty-ext
@@ -33,7 +29,7 @@ public class NettyServerTest {
                         .addValueProvider(JacksonProvider.class)
                         .addRouter(routes -> {
                             routes.get("/get", (req, resp) -> resp.sendString(Mono.just("asdfasdf")))
-                            .directory("/static", resource);
+                            .directory("/s", resource);
                         }).build()
                 );
 

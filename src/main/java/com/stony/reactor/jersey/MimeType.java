@@ -19,6 +19,7 @@ public class MimeType {
     String contentType;
     String suffix;
     private String fileName;
+    private String filePath;
 
     public MimeType(String contentType, String suffix) {
         this.contentType = contentType;
@@ -41,12 +42,21 @@ public class MimeType {
         return fileName;
     }
 
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
     @Override
     public String toString() {
         return "MimeType{" +
                 "contentType='" + contentType + '\'' +
                 ", suffix='" + suffix + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", filePath='" + filePath + '\'' +
                 '}';
     }
 

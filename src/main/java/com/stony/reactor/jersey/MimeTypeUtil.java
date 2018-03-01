@@ -56,13 +56,24 @@ public class MimeTypeUtil {
             e.printStackTrace();
         }
     }
-
+    public static String getFilePath(String path) {
+        if (isEmpty(path)) {
+            return null;
+        }
+        if (path.charAt(0) == '/') {
+            path = path.substring(1);
+        }
+        if (path.charAt(path.length() - 1) == '/') {
+            path = path.substring(0, path.length() - 1);
+        }
+        return path;
+    }
     public static String getFileName(String path) {
         if (isEmpty(path)) {
             return null;
         }
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.lastIndexOf("/"));
+        if (path.charAt(path.length() - 1) == '/') {
+            path = path.substring(0, path.length() - 1);
         }
         int index = path.lastIndexOf("/");
         if (index == -1) {
@@ -89,14 +100,15 @@ public class MimeTypeUtil {
     }
     public MimeType getMimeTypeByUri(String uri) {
         try{
-            return getMimeTypeByPath(uri);
+            return getMimeTypeByPath(URI.create(uri).getPath());
         } catch (Exception e){
             System.out.println("getMimeTypeByPath [" + uri + "] : " + e.getMessage());
             return null;
         }
     }
     public MimeType getMimeTypeByPath(String path) {
-        String fileName = getFileName(path);
+        String filePath = getFilePath(path);
+        String fileName = getFileName(filePath);
         if (isEmpty(fileName)) {
             return null;
         }
@@ -106,6 +118,7 @@ public class MimeTypeUtil {
             return null;
         }
         type.setFileName(fileName);
+        type.setFilePath(filePath);
         return type;
     }
     public MimeType getMimeTypeBySuffix(String suffix) {
