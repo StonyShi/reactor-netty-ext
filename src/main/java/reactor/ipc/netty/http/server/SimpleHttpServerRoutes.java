@@ -1,5 +1,7 @@
 package reactor.ipc.netty.http.server;
 
+import com.stony.reactor.jersey.MimeType;
+import com.stony.reactor.jersey.MimeTypeUtil;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -7,9 +9,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -26,6 +26,7 @@ import java.util.function.Predicate;
 public class SimpleHttpServerRoutes implements HttpServerRoutes {
 
     BiFunction<HttpServerRequest, HttpServerResponse, Publisher<Void>> handler;
+    private volatile Path staticDirectory;
 
     private SimpleHttpServerRoutes(BiFunction<HttpServerRequest, HttpServerResponse, Publisher<Void>> handler) {
         this.handler = handler;
@@ -41,6 +42,7 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
     public HttpServerRoutes directory(String uri, Path directory,
                                       Function<HttpServerResponse, HttpServerResponse> interceptor) {
         Objects.requireNonNull(directory, "directory");
+        this.staticDirectory = directory;
         return route(HttpPredicate.prefix(uri), (req, resp) -> {
 
             String prefix = URI.create(req.uri())
@@ -86,6 +88,13 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
         final Iterator<HttpRouteHandler> iterator = handlers.iterator();
         HttpRouteHandler cursor;
 
+        MimeType type = MimeTypeUtil.getInstance().getMimeTypeByUri(request.uri());
+        if(type != null) {
+            Path p = staticDirectory.resolve(type.getFileName());
+            if (Files.isReadable(p)) {
+                return response.sendFile(p);
+            }
+        }
         try {
             while (iterator.hasNext()) {
                 cursor = iterator.next();
