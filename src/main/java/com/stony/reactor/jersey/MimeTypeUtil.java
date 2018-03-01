@@ -1,6 +1,8 @@
 package com.stony.reactor.jersey;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,10 +26,12 @@ public class MimeTypeUtil {
     static Map<String, MimeType> SUFFIX_MAP;
     static List<MimeType> MIME_TYPES;
     private MimeTypeUtil() {
-        Path path = Paths.get(MimeTypeUtil.class.getResource("/mime.types").getPath());
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(
+                        this.getClass().getResourceAsStream("/mime.types"), StandardCharsets.UTF_8));
         List<MimeType> types = null;
         try {
-            types = Files.lines(path, StandardCharsets.UTF_8)
+            types = br.lines()
                     .filter(s -> !s.startsWith("#"))
                     .map(s -> s.replace(";", ""))
                     .map(s -> {
@@ -52,8 +56,16 @@ public class MimeTypeUtil {
             }
             MIME_TYPES = types;
             SUFFIX_MAP = types.stream().collect(Collectors.toMap(MimeType::getSuffix, mimeType -> mimeType));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if(br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
     public static String getFilePath(String path) {
