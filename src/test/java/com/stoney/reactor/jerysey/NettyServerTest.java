@@ -27,7 +27,7 @@ public class NettyServerTest {
                 .startAndAwait(JerseyBasedHandler.builder()
                         .withClassPath("com.stoney.reactor.jerysey.router")
                         .addValueProvider(JacksonProvider.class)
-                        .addRouter(routes -> {
+                        .withRouter(routes -> {
                             routes.get("/get", (req, resp) -> resp.sendString(Mono.just("asdfasdf")))
                             .directory("/s", resource);
                         }).build()

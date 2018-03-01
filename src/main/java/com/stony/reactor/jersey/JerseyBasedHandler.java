@@ -1,7 +1,5 @@
 package com.stony.reactor.jersey;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.sun.jersey.api.container.ContainerFactory;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.spi.container.ContainerRequest;
@@ -22,12 +20,11 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * <p>reactor-netty-ext
@@ -117,7 +114,7 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
 
     public static final class Builder {
         String classPath = "com.jersey";
-        List<Class<?>> providerClass = Lists.newArrayList(MessageBodyReader.class, MessageBodyWriter.class);
+        List<Class<?>> providerClass = Arrays.asList(MessageBodyReader.class, MessageBodyWriter.class);
         Set<Class<?>> providers = new HashSet<>(16);
         Consumer<HttpServerRoutes> routesBuilder;
 
@@ -126,13 +123,13 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
             return this;
         }
 
-        public Builder addRouter(Consumer<HttpServerRoutes> routesBuilder) {
+        public Builder withRouter(Consumer<HttpServerRoutes> routesBuilder) {
             this.routesBuilder = routesBuilder;
             return this;
         }
 
         public Builder withClassPath(Collection<String> stringCollection) {
-            this.classPath = Joiner.on(";").join(stringCollection);
+            this.classPath = stringCollection.stream().collect(Collectors.joining(":"));
             return this;
         }
 
