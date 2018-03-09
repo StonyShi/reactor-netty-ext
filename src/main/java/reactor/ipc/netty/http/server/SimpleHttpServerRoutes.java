@@ -92,8 +92,12 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
         if(type != null) {
             Path p = staticDirectory.resolve(type.getFilePath());
             if (Files.isReadable(p)) {
+//                return response.header("Content-Type", type.getContentType()).sendFile(p);
                 return response.sendFile(p);
             }
+//            else {
+//                return response.status(404).header("Content-Type", "text/plan; charset=UTF-8").send();
+//            }
         }
         try {
             while (iterator.hasNext()) {

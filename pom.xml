@@ -6,11 +6,12 @@
 
     <groupId>com.stony.reactor</groupId>
     <artifactId>reactor-netty-ext</artifactId>
-    <version>1.3</version>
+    <version>1.3.3</version>
 
 
     <properties>
         <jdk.version>1.8</jdk.version>
+        <log.version>2.8.1</log.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <maven.compiler.compilerVersion>${jdk.version}</maven.compiler.compilerVersion>
@@ -73,27 +74,32 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.3</version>
+            <version>${log.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.3</version>
+            <version>${log.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency> <!-- 桥接：告诉Slf4j使用Log4j2 -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.3</version>
+            <version>${log.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency> <!-- 桥接：告诉commons logging使用Log4j2 -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
-            <version>2.3</version>
+            <version>${log.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.10</version>
+            <version>1.7.25</version>
+            <scope>compile</scope>
         </dependency>
 
 
