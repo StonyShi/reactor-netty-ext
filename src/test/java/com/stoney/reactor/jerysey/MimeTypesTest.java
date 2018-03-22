@@ -2,6 +2,8 @@ package com.stoney.reactor.jerysey;
 
 import com.stony.reactor.jersey.MimeType;
 import com.stony.reactor.jersey.MimeTypeUtil;
+import org.junit.Test;
+import reactor.ipc.netty.http.server.SimpleHttpPredicate;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.*;
@@ -96,6 +99,24 @@ public class MimeTypesTest {
             prefix = prefix.substring(0,prefix.length()-1);
         }
         System.out.println(prefix);
+    }
+
+    @Test
+    public void test_102(){
+        String url = "http://java.sun.com/test/test.css?a=1&b=2";
+        URI uri = URI.create(url);
+        System.out.println(uri.getPath());
+        System.out.println(uri.getHost());
+        System.out.println(uri.getQuery());
+        System.out.println("------------------");
+        url = "/test/test.css?a=1&b=2&name=痘痘";
+
+        uri = URI.create(url);
+        System.out.println(uri.getPath());
+        System.out.println(uri.getHost());
+        System.out.println(uri.getQuery());
+        System.out.println(uri.getRawQuery());
+        System.out.println(SimpleHttpPredicate.parseParameters(uri.getQuery()));
     }
 
 

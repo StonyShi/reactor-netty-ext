@@ -98,6 +98,7 @@ public class NettyToJerseyBridge {
 
                     @Override
                     public void onComplete() {
+
                         latch.countDown();
                     }
                 });

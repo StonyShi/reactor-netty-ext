@@ -2,6 +2,7 @@ package reactor.ipc.netty.http.server;
 
 import com.stony.reactor.jersey.MimeType;
 import com.stony.reactor.jersey.MimeTypeUtil;
+import io.netty.handler.codec.http.HttpMethod;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -39,6 +40,11 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
     private final CopyOnWriteArrayList<HttpRouteHandler> handlers = new CopyOnWriteArrayList<>();
 
     @Override
+    public HttpServerRoutes get(String path, BiFunction<? super HttpServerRequest, ? super HttpServerResponse, ? extends Publisher<Void>> handler) {
+        return route(SimpleHttpPredicate.get(path), handler);
+    }
+
+    @Override
     public HttpServerRoutes directory(String uri, Path directory,
                                       Function<HttpServerResponse, HttpServerResponse> interceptor) {
         Objects.requireNonNull(directory, "directory");
@@ -74,9 +80,9 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
         Objects.requireNonNull(handler, "handler");
 
         if (condition instanceof HttpPredicate) {
-            handlers.add(new HttpRouteHandler(condition,
-                    handler,
-                    (HttpPredicate) condition));
+            handlers.add(new HttpRouteHandler(condition, handler, (HttpPredicate) condition));
+        } else if (condition instanceof SimpleHttpPredicate) {
+            handlers.add(new HttpRouteHandler(condition, handler, (SimpleHttpPredicate) condition));
         } else {
             handlers.add(new HttpRouteHandler(condition, handler, null));
         }
@@ -113,7 +119,6 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
             Exceptions.throwIfFatal(t);
             return Mono.error(t); //500
         }
-
         return response.sendNotFound();
     }
 
