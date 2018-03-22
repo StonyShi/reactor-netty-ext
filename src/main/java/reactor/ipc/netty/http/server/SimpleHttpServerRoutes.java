@@ -93,24 +93,23 @@ public class SimpleHttpServerRoutes implements HttpServerRoutes {
     public Publisher<Void> apply(HttpServerRequest request, HttpServerResponse response) {
         final Iterator<HttpRouteHandler> iterator = handlers.iterator();
         HttpRouteHandler cursor;
-
-        MimeType type = MimeTypeUtil.getInstance().getMimeTypeByUri(request.uri());
-        if(type != null) {
-            Path p = staticDirectory.resolve(type.getFilePath());
-            if (Files.isReadable(p)) {
-//                return response.header("Content-Type", type.getContentType()).sendFile(p);
-                return response.sendFile(p);
-            }
-//            else {
-//                return response.status(404).header("Content-Type", "text/plan; charset=UTF-8").send();
-//            }
-        }
         try {
             while (iterator.hasNext()) {
                 cursor = iterator.next();
                 if (cursor.test(request)) {
                     return cursor.apply(request, response);
                 }
+            }
+            MimeType type = MimeTypeUtil.getInstance().getMimeTypeByUri(request.uri());
+            if(type != null) {
+                Path p = staticDirectory.resolve(type.getFilePath());
+                if (Files.isReadable(p)) {
+//                return response.header("Content-Type", type.getContentType()).sendFile(p);
+                    return response.sendFile(p);
+                }
+//            else {
+//                return response.status(404).header("Content-Type", "text/plan; charset=UTF-8").send();
+//            }
             }
             if (handler != null) {
                 return handler.apply(request, response);
