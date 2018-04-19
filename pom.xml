@@ -4,7 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.stony.reactor</groupId>
+    <groupId> com.github.stonyshi</groupId>
+    <!--<groupId>com.stony.reactor</groupId>-->
     <artifactId>reactor-netty-ext</artifactId>
     <version>1.4.1</version>
 
@@ -205,4 +206,27 @@
             <url>http://10.0.11.69:8082/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+    <!--  <id>sonatype-nexus-snapshots</id> -->
+    <!--<id>sonatype-nexus-staging</id>-->
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/StonyShi/reactor-netty-ext</url>
+        <connection>https://github.com/StonyShi/reactor-netty-ext</connection>
+        <developerConnection>https://github.com/StonyShi/reactor-netty-ext</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>Stony</name>
+            <email>shi789510@163.com</email>
+            <url>https://github.com/StonyShi/reactor-netty-ext</url>
+        </developer>
+    </developers>
 </project>
