@@ -1,5 +1,6 @@
 ### reactor-netty-ext
-#### 支持jersey 的
+#### https://github.com/reactor/reactor-netty 的扩展
+#### 支持jersey 注解，支持get?p=1 的方式访问，支持静态资源不加配置前缀（如不加: `/static` ）
 ###  增加对原有路由全桥接，支持静态文件访问
 ```
  final Path resource = Paths.get(NettyServerTest.class.getResource("/public").toURI());
