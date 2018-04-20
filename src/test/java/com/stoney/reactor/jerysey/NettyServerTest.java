@@ -4,6 +4,7 @@ import com.stony.reactor.jersey.JacksonProvider;
 import com.stony.reactor.jersey.JerseyBasedHandler;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.ipc.netty.http.server.HttpServer;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
 public class NettyServerTest {
 
     @Test
+    @Ignore
     public void test_start() throws URISyntaxException {
         final Path resource = Paths.get(NettyServerTest.class.getResource("/public").toURI());
         HttpServer.create(opts -> opts.port(8082))

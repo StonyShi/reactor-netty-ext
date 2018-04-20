@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId> com.github.stonyshi</groupId>
+    <groupId>com.github.stonyshi</groupId>
     <!--<groupId>com.stony.reactor</groupId>-->
     <artifactId>reactor-netty-ext</artifactId>
-    <version>1.4.1</version>
+    <version>1.0.1</version>
 
 
     <properties>
@@ -178,7 +178,6 @@
     </dependencies>
 
 
-
     <profiles>
         <profile>
             <id>dev</id>
@@ -216,8 +215,42 @@
         </profile>
         <profile>
             <id>release</id>
+            <properties>
+                <gpg.keyname>Stony</gpg.keyname>
+                <gpg.executable>gpg2</gpg.executable>
+                <gpg.passphrase>1322</gpg.passphrase>
+            </properties>
             <build>
                 <plugins>
+                    <!--<plugin>-->
+                        <!--<groupId>org.apache.maven.plugins</groupId>-->
+                        <!--<artifactId>maven-deploy-plugin</artifactId>-->
+                        <!--<configuration>-->
+                            <!--<skip>true</skip>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.sonatype.plugins</groupId>-->
+                        <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+                        <!--<version>1.6.7</version>-->
+                        <!--<extensions>true</extensions>-->
+                        <!--<configuration>-->
+                            <!--<serverId>oss</serverId>-->
+                            <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+                            <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.apache.maven.plugins</groupId>-->
+                        <!--<artifactId>maven-release-plugin</artifactId>-->
+                        <!--<version>2.5</version>-->
+                        <!--<configuration>-->
+                            <!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
+                            <!--<useReleaseProfile>false</useReleaseProfile>-->
+                            <!--<releaseProfiles>release</releaseProfiles>-->
+                            <!--<goals>deploy</goals>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
                     <!-- Source -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -250,27 +283,32 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
+                                <id>sign-artifacts</id>
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <!--<configuration>-->
+                                    <!--<keyname>${gpg.keyname}</keyname>-->
+                                    <!--<passphrase>1322</passphrase>-->
+                                <!--</configuration>-->
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
             <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
                 <repository>
                     <id>oss</id>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
             </distributionManagement>
         </profile>
     </profiles>
