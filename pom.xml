@@ -204,12 +204,12 @@
                 <repository>
                     <id>im20.releases.http</id>
                     <name>Nexus Release Repository</name>
-                    <url>http://10.0.11.69:8082/repository/maven-releases/</url>
+                    <url>http://10.0.13.204:8082/repository/maven-releases/</url>
                 </repository>
                 <snapshotRepository>
                     <id>im20.snapshots.http</id>
                     <name>Nexus Snapshots Repository</name>
-                    <url>http://10.0.11.69:8082/repository/maven-snapshots/</url>
+                    <url>http://10.0.13.204:8082/repository/maven-snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>
         </profile>

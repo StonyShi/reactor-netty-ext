@@ -43,3 +43,17 @@ curl -X POST \
       "first_name": "li"
   }
 ```
+##test
+```
+
+wrk -H 'Connection: keep-alive' -t12 -c400 -d30s http://localhost:8082/get
+
+Running 30s test @ http://localhost:8082/get
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     6.99ms   31.79ms 892.82ms   99.18%
+    Req/Sec     7.29k     0.93k   23.47k    93.04%
+  2606144 requests in 30.10s, 248.54MB read
+Requests/sec:  86582.83
+Transfer/sec:      8.26MB
+```
