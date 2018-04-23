@@ -9,6 +9,9 @@
     <artifactId>reactor-netty-ext</artifactId>
     <version>1.0.1</version>
 
+    <name>reactor-netty-ext</name>
+    <description>reactor-netty expand support jersey </description>
+    <url>https://github.com/StonyShi/reactor-netty-ext</url>
 
     <properties>
         <jdk.version>1.8</jdk.version>
@@ -324,8 +327,8 @@
 
     <scm>
         <url>https://github.com/StonyShi/reactor-netty-ext</url>
-        <connection>scm:https://github.com/StonyShi/reactor-netty-ext.git</connection>
-        <developerConnection>scm:https://github.com/StonyShi/reactor-netty-ext.git</developerConnection>
+        <connection>scm:git:https://git@github.com/StonyShi/reactor-netty-ext.git</connection>
+        <developerConnection>scm:git:https://git@github.com/StonyShi/reactor-netty-ext.git</developerConnection>
     </scm>
     <developers>
         <developer>
