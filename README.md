@@ -16,7 +16,7 @@
                  }).build()
          );
 
-@Path("/hot")
+@Path("/api")
 public class ServiceHot {
     @POST()
     @Path("/post")
@@ -24,7 +24,13 @@ public class ServiceHot {
     @Produces(MediaType.APPLICATION_JSON)
     public UserTest post(UserTest body) {
         System.out.println("body = " + body);
-        return new UserTest("keke", 200, "li");
+        return new UserTest("bai", 200, "li");
+    }
+    @GET()
+    @Path("/get")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserTest get() {
+        return new UserTest("bai", 199, "li");
     }
 }
 
@@ -35,12 +41,12 @@ curl -X POST \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'postman-token: f202fc59-94b9-f0e3-307d-35cb0fe885d6' \
-  -d '{"first_name":"li","name":"le","id":200}'
+  -d '{"first_name":"li","name":"jiu","id":200}'
 
 
 
   {
-      "name": "keke",
+      "name": "bai",
       "id": 200,
       "first_name": "li"
   }
