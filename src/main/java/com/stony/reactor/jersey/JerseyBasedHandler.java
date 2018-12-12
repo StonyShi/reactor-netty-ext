@@ -61,7 +61,7 @@ public class JerseyBasedHandler implements BiFunction<HttpServerRequest, HttpSer
     @Override
     public Publisher<Void> apply(HttpServerRequest request, HttpServerResponse response) {
 
-        HttpServerRoutes routes = HttpServerRoutes.newRoutes();
+//        HttpServerRoutes routes = HttpServerRoutes.newRoutes();
 
          /*
          * Creating the Container request eagerly, subscribes to the request content eagerly. Failure to do so, will

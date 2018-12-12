@@ -1,7 +1,9 @@
 ### reactor-netty-ext
-#### https://github.com/reactor/reactor-netty 的扩展
-#### 支持jersey 注解，支持get?p=1 的方式访问，支持静态资源不加配置前缀（如不加: `/static` ）
-###  增加对原有路由全桥接，支持静态文件访问
+#### 1. [reactor-netty](https://github.com/reactor/reactor-netty)  jersey1.x的扩展
+#### 2. 扩展get方法支持get?p=1 的方式访问
+#### 3. 支持静态资源不加配置前缀（如不加: `/res` ）
+#### 4. 增加对原有路由全桥接，支持静态文件访问
+### 代码示例：
 ```
  final Path resource = Paths.get(NettyServerTest.class.getResource("/public").toURI());
  HttpServer.create(8080)
@@ -10,7 +12,7 @@
                  .addValueProvider(JacksonProvider.class)
                  .addRouter(routes -> {
                      routes.get("/get", (req, resp) -> resp.sendString(Mono.just("asdfasdf")))
-                     .directory("/static", resource);
+                     .directory("/res", resource);
                  }).build()
          );
 
@@ -56,4 +58,15 @@ Running 30s test @ http://localhost:8082/get
   2606144 requests in 30.10s, 248.54MB read
 Requests/sec:  86582.83
 Transfer/sec:      8.26MB
+
+wrk -H 'Connection: keep-alive' -t20 -c400 -d30s http://localhost:8082/api/get?id=3887099059629981696
+Running 30s test @ http://localhost:8082/api/get?id=3887099059629981696
+  20 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    54.04ms    9.31ms 142.88ms   71.88%
+    Req/Sec   370.86     53.38   676.00     71.84%
+  221881 requests in 30.08s, 107.92MB read
+  Socket errors: connect 0, read 221881, write 0, timeout 0
+Requests/sec:   7376.17
+Transfer/sec:      3.59MB
 ```

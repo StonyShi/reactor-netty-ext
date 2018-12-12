@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -114,17 +115,30 @@ public class MimeTypeUtil {
         try{
             return getMimeTypeByPath(URI.create(uri).getPath());
         } catch (Exception e){
-            System.out.println("getMimeTypeByPath [" + uri + "] : " + e.getMessage());
+            System.out.println("getMimeTypeByUri [" + uri + "] : " + e.getMessage());
             return null;
         }
     }
     public MimeType getMimeTypeByPath(String path) {
+        try{
+            return doGetMimeTypeByPath(path);
+        } catch (Exception e){
+            System.out.println("getMimeTypeByPath [" + path + "] : " + e.getMessage());
+            return null;
+        }
+    }
+
+
+    private MimeType doGetMimeTypeByPath(String path) {
         String filePath = getFilePath(path);
         String fileName = getFileName(filePath);
         if (isEmpty(fileName)) {
             return null;
         }
         String suffix = getFileSuffix(fileName);
+        if(suffix == null) {
+            return null;
+        }
         MimeType type = getMimeTypeBySuffix(suffix);
         if(type == null) {
             return null;

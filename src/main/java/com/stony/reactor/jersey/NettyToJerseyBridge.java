@@ -71,6 +71,7 @@ public class NettyToJerseyBridge {
                     responseHeaders.add(header.getKey(), header.getValue());
                 }
                 serverResponse.headers(responseHeaders);
+
                 return new ByteBufOutputStream(contentBuffer);
             }
 

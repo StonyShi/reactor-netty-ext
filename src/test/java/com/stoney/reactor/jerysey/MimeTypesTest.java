@@ -102,6 +102,15 @@ public class MimeTypesTest {
     }
 
     @Test
+    public void test_105(){
+        String url = "http://java.sun.com/test/test.css?a=1&b=2";
+        URI uri = URI.create(url);
+        System.out.println(uri.getPath());
+        System.out.println(MimeTypeUtil.getFilePath(uri.getPath()));
+        System.out.println(MimeTypeUtil.getFileName(MimeTypeUtil.getFilePath(uri.getPath())));
+        System.out.println(MimeTypeUtil.getFileSuffix(MimeTypeUtil.getFileName(MimeTypeUtil.getFilePath(uri.getPath()))));
+    }
+    @Test
     public void test_102(){
         String url = "http://java.sun.com/test/test.css?a=1&b=2";
         URI uri = URI.create(url);
