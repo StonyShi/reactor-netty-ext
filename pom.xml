@@ -7,7 +7,7 @@
     <groupId>com.github.stonyshi</groupId>
     <!--<groupId>com.stony.reactor</groupId>-->
     <artifactId>reactor-netty-ext</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <packaging>jar</packaging>
     <name>reactor-netty-ext</name>
