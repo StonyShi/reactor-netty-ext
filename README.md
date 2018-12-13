@@ -8,7 +8,7 @@
 <dependency>
     <groupId>com.github.stonyshi</groupId>
     <artifactId>reactor-netty-ext</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 ```
