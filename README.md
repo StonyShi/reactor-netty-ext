@@ -5,6 +5,13 @@
 #### 4. 增加对原有路由全桥接，支持静态文件访问
 ### 代码示例：
 ```
+<dependency>
+    <groupId>com.github.stonyshi</groupId>
+    <artifactId>reactor-netty-ext</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+```
  final Path resource = Paths.get(NettyServerTest.class.getResource("/public").toURI());
  HttpServer.create(8080)
          .startAndAwait(JerseyBasedHandler.builder()
